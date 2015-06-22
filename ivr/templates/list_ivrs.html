@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+<!-- Main component for a primary marketing message or call to action -->
+{% block head_title %} {{user.username}} IVRS | {{ block.super }}{% endblock %}
+{% block jumbotron %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	
+<div class="col-md-2">
+
+</div>
+
+<div class="col-md-8">
+  {{ivrdata}}
+  {% for data in ivrdata %}
+  <h1>_____________</h2>
+    <p>{{data.ivr_message}}</p>
+    <p>{{data.ivr_no_input_message}}</p>
+    <p>{{data.ivr_wrong_input_message}}</p>
+    <p>{{data.ip_zero}}</p>
+    <p>{{data.ip_one}}</p>
+    <p>{{data.ip_two}}</p>
+    <p>{{data.ip_three}}</p>
+    <p>{{data.ip_four}}</p>
+    <p>{{data.ip_five}}</p>
+    <p>{{data.ip_six}}</p>
+    <p>{{data.ip_seven}}</p>
+    <p>{{data.ip_eight}}</p>
+    <p>{{data.ip_nine}}</p>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+          <p class="pull-right"></p>
+          <h3 class="panel-title" id="dis_order_id" name="dis_order_id">{{data.ivr_message}}</h3>
+        </div>
+        <div class="panel-body">
+        </div>
+        <div class="panel-footer">
+                        
+        </div>
+    </div>
+
+  {% endfor %}
+	
+</div>
+
+<div class="col-md-2">
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+$(document).ready(function () {
+
+
+$('#login_form').validator('validate');
+
+}
+</script>
+{% endblock %}

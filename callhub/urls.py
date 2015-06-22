@@ -24,7 +24,9 @@ urlpatterns = [
     url(r"^register/", "ivr.views.register", name="register"),
     url(r"^login/", "ivr.views.login", name="login"),
     url(r"^signout/", "ivr.views.signout", name="signout"),
+    url(r"^request/config_ivr/", "ivr.views.config_ivr", name="config_ivr"),
     url(r"^response/ivr/", "ivr.views.ivr_view", name="ivr_view"),
+    url(r"^response/list/ivr" , "ivr.views.ivrs", name="ivrs"),
     #url(r"^contact/$", "ivr.views.contact", name="contact")
 
     url(r'^api/', include('api.urls')),

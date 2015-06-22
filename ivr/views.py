@@ -8,7 +8,11 @@ from django.contrib.auth.models import User
 
 from django.http import HttpResponseRedirect, HttpResponse , HttpRequest
 # our django forms
-from forms import UserForm , SignedUserForm
+from forms import UserForm , SignedUserForm, ConfigIvrForm
+
+# importing models
+from models import IvrData
+
 from django.template import RequestContext
 # sending mail usin Django
 from django.core.mail import send_mail
@@ -129,50 +133,48 @@ def ivr_view(request):
 		return HttpResponse(str(response), content_type="text/xml")
 
 
-def register_process(request):
-    send_email=''
-    if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            new_user = User.objects.create_user(**form.cleaned_data)
-            new_user.save()
-            new_user.backend='django.contrib.auth.backends.ModelBackend'
-            login(request,new_user)
-            send_email=request.POST.get('email')
-            # redirect, or however you may want to get to the main view
-            return HttpResponseRedirect('index.html')
-        else:
-            form = UserForm()
-        
-        
-    elif request.method == 'GET':
-        form = UserForm(request.GET)
-        if form.is_valid():
-            new_user = User.objects.create_user(**form.cleaned_data)
-            new_user.save()
-            new_user.backend='django.contrib.auth.backends.ModelBackend'
-            login(request,new_user)
-            send_email=request.GET.get('email')
-            # redirect, or however you may want to get to the main view
-            return HttpResponseRedirect('index.html')
-        else:
-            form = UserForm()
-    #send_mail('Subject here', 'Here is the message.', 'chitrankdixit@gmail.com',
-    #[send_email], fail_silently=False)    
-    return render(request,'index.html',{'form':form})
+def config_ivr(request):
+	context = {
+		"template_title": "Configure IVR"
+	}
+	print 'hii'
+	if request.method == 'POST':
+		form = ConfigIvrForm(request.POST)
+		configure_ivr = IvrData()
+		configure_ivr.ivr_message = request.POST['welcome_message']
+		configure_ivr.ivr_no_input_message = request.POST['no_input_message']
+		configure_ivr.ivr_wrong_input_message = request.POST['wrong_input_message']
+		configure_ivr.ip_zero = request.POST['zeroip_message']  if (request.POST['zeroip_message']!='') else 'Invalid Input'
+		configure_ivr.ip_one = request.POST['oneip_message']  if (request.POST['oneip_message']!='') else 'Invalid Input'
+		configure_ivr.ip_two = request.POST['twoip_message']  if (request.POST['twoip_message']!='') else 'Invalid Input'
+		configure_ivr.ip_three = request.POST['threeip_message']  if (request.POST['threeip_message']!='') else 'Invalid Input'
+		configure_ivr.ip_four = request.POST['fourip_message']  if (request.POST['fourip_message']!='') else 'Invalid Input'
+		configure_ivr.ip_five = request.POST['fiveip_message']  if (request.POST['fiveip_message']!='') else 'Invalid Input'
+		configure_ivr.ip_six = request.POST['sixip_message']  if (request.POST['sixip_message']!='') else 'Invalid Input'
+		configure_ivr.ip_seven = request.POST['sevenip_message']  if (request.POST['sevenip_message']!='') else 'Invalid Input'
+		configure_ivr.ip_eight = request.POST['eightip_message']  if (request.POST['eightip_message']!='') else 'Invalid Input'
+		configure_ivr.ip_nine = request.POST['nineip_message']  if (request.POST['nineip_message']!='') else 'Invalid Input'
 
+		configure_ivr.user = request.user
 
-def login_process(request):
-    username=request.POST.get('username')
-    password=request.POST.get('password')
-    user = auth.authenticate(username=username, password=password)
-    if user is not None:
-        auth.login(request,user)
-        return render_to_response('index.html',{}, context_instance=RequestContext(request))# HttpResponseRedirect('/blog/profile/')  '/blog/profile/'
-    elif user is None: 
-        return render_to_response('index.html',{}, context_instance=RequestContext(request))# HttpResponseRedirect('home')  # '/blog/home/'
+		configure_ivr.save()
+		print request.user
 
+		return HttpResponseRedirect('/')
+		# if form.is_valid():
+		# 	print "hii2"
+		# 	instance = form.save(commit=False)
+		# 	print form.cleaned_data.get("welcome_message")
+		# 	instance.save();
+	return render(request,"config_ivr.html", context)
 
+def ivrs(request):
+	Ivrdata = IvrData.objects.all()
+	context = {
+		# "template_title": {{request.user.username}} + "IVRs",
+		"ivrdata": Ivrdata
+	}	
+	return render(request, "list_ivrs.html", context)
 
 # @app.route('/response/ivr/', methods=['GET', 'POST'])
 # def ivr():
@@ -204,61 +206,3 @@ def login_process(request):
 #             response.addSpeak(WRONG_INPUT_MESSAGE)
 
 #         return Response(str(response), mimetype='text/xml')
-
-# def signup(request):
-#     send_email=''
-#     if request.method == 'POST':
-#         form = UserForm(request.POST)
-#         if form.is_valid():
-#             new_user = User.objects.create_user(**form.cleaned_data)
-#             new_user.save()
-#             new_user.backend='django.contrib.auth.backends.ModelBackend'
-#             login(request,new_user)
-#             send_email=request.POST.get('email')
-#             # redirect, or however you may want to get to the main view
-#             return HttpResponseRedirect('index.html')
-#         else:
-#             form = UserForm()
-        
-        
-#     elif request.method == 'GET':
-#         form = UserForm(request.GET)
-#         if form.is_valid():
-#             new_user = User.objects.create_user(**form.cleaned_data)
-#             new_user.save()
-#             new_user.backend='django.contrib.auth.backends.ModelBackend'
-#             login(request,new_user)
-#             send_email=request.GET.get('email')
-#             # redirect, or however you may want to get to the main view
-#             return HttpResponseRedirect('index.html')
-#         else:
-#             form = UserForm()
-#     #send_mail('Subject here', 'Here is the message.', 'chitrankdixit@gmail.com',
-#     #[send_email], fail_silently=False)    
-#     return render(request,'index.html',{'form':form})
-
-
-# def signin(request):
-#     username=request.POST.get('username')
-#     password=request.POST.get('password')
-#     user = auth.authenticate(username=username, password=password)
-#     if user is not None:
-#         auth.login(request,user)
-#         return render_to_response('index.html',{}, context_instance=RequestContext(request))# HttpResponseRedirect('/blog/profile/')  '/blog/profile/'
-#     elif user is None: 
-#         return render_to_response('index.html',{}, context_instance=RequestContext(request))# HttpResponseRedirect('home')  # '/blog/home/'
-        
-        
-    
-    
-    
-# def signout(request):
-#     logout(request)
-#     return render_to_response('index.html',{}, context_instance=RequestContext(request))
- 
-
-# def search(request):
-#     return render_to_response('search.html',{}, context_instance=RequestContext(request))
-    
-# def profile(request):
-#     return render_to_response('profile.html',{}, context_instance=RequestContext(request))

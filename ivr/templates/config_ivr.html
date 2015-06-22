@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+<!-- Main component for a primary marketing message or call to action -->
+{% block head_title %}Configure IVR | {{ block.super }}{% endblock %}
+{% block jumbotron %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	
+<div class="col-md-3">
+
+</div>
+
+<div class="col-md-6">
+	<h1>Config Ivr</h1>
+	<form name="config_ivr" id="configivr_form" action="/request/config_ivr/" method="post">{% csrf_token %}
+
+        <div class="form-group">
+    
+        <label>Welcome Message</label>
+        <textarea class="form-control col-sm-3" name="welcome_message" id="welcome_message" placeholder="Enter the Welcome Message " required></textarea>
+        <br><br><br><br>
+        </div>
+
+		    
+        <div class="form-group">
+          <label> No Input Message </label> <textarea class="form-control col-sm-3" name="no_input_message" id="no_input_message" placeholder="Enter the message when user does not enter any number" required></textarea>
+          
+          <br><br><br><br>
+        </div>
+
+        <div class="form-group">
+          <label> Wrong Input Message </label> 
+          <textarea class="form-control col-sm-3" name="wrong_input_message" id="wrong_input_message" placeholder="Enter the Message when wrong input is received from the caller" required></textarea>
+                  
+          <br><br><br><br>
+        </div>
+
+        <div class="form-group">
+          <label> 0  </label> 
+          <textarea class="form-control col-sm-3" name="zeroip_message" id="zeroip_message" placeholder="Enter the Message when caller press 0 from the phone" ></textarea>
+
+          
+          <br><br><br><br>
+        </div>
+
+        <div class="form-group">
+          <label> 1  </label> <textarea class="form-control col-sm-3" name="oneip_message" id="oneip_message" placeholder="Enter the Message when caller press 1 from the phone" ></textarea>
+          
+          <br><br><br><br>
+        </div>
+
+        <div class="form-group">
+          <label> 2  </label> <textarea class="form-control col-sm-3" name="twoip_message" id="twoip_message" placeholder="Enter the Message when caller press 2 from the phone" ></textarea>
+          
+          <br><br><br><br>
+        </div>
+
+        <div class="form-group">
+          <label> 3  </label> <textarea class="form-control col-sm-3" name="threeip_message" id="threeip_message" placeholder="Enter the Message when caller press 3 from the phone" ></textarea>
+          
+          <br><br><br><br>
+        </div>
+
+        <div class="form-group">
+          <label> 4  </label> <textarea class="form-control col-sm-3" name="fourip_message" id="fourip_message" placeholder="Enter the Message when caller press 4 from the phone" ></textarea>
+          
+          <br><br><br><br>
+        </div>
+
+        <div class="form-group">
+          <label> 5  </label> <textarea class="form-control col-sm-3" name="fiveip_message" id="fiveip_message" placeholder="Enter the Message when caller press 5 from the phone" ></textarea>
+          
+          <br><br><br><br>
+        </div>
+
+        <div class="form-group">
+          <label> 6  </label> <textarea class="form-control col-sm-3" name="sixip_message" id="sixip_message" placeholder="Enter the Message when caller press 6 from the phone" ></textarea>
+          
+          <br><br><br><br>
+        </div>
+
+        <div class="form-group">
+          <label> 7  </label> <textarea class="form-control col-sm-3" name="sevenip_message" id="sevenip_message" placeholder="Enter the Message when caller press 7 from the phone" ></textarea>
+          <br><br><br><br>
+        </div>
+
+        <div class="form-group">
+          <label> 8  </label> <textarea class="form-control col-sm-3" name="eightip_message" id="eightip_message" placeholder="Enter the Message when caller press 8 from the phone" ></textarea>
+          
+          <br><br><br><br>
+        </div>
+
+        <div class="form-group">
+          <label> 9  </label> <textarea class="form-control col-sm-3" name="nineip_message" id="nineip_message" placeholder="Enter the Message when caller press 9 from the phone" ></textarea>
+          
+          <br><br><br><br>
+        </div>
+
+        
+        <div class="form-group">
+          <br>
+          <input type="submit" class="btn btn-primary" value="Save and Get Endpoint" />
+        </div>
+	</form>
+	
+</div>
+
+<div class="col-md-3">
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+$(document).ready(function () {
+
+
+$('#login_form').validator('validate');
+
+}
+</script>
+{% endblock %}
