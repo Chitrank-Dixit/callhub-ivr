@@ -14,10 +14,10 @@
 </div>
 
 <div class="col-md-8">
-  {{ivrdata}}
+  
   {% for data in ivrdata %}
-  <h1>_____________</h2>
-    <p>{{data.ivr_message}}</p>
+  
+    <!-- <p>{{data.ivr_message}}</p>
     <p>{{data.ivr_no_input_message}}</p>
     <p>{{data.ivr_wrong_input_message}}</p>
     <p>{{data.ip_zero}}</p>
@@ -29,17 +29,26 @@
     <p>{{data.ip_six}}</p>
     <p>{{data.ip_seven}}</p>
     <p>{{data.ip_eight}}</p>
-    <p>{{data.ip_nine}}</p>
+    <p>{{data.ip_nine}}</p> -->
 
     <div class="panel panel-info">
         <div class="panel-heading">
           <p class="pull-right"></p>
-          <h3 class="panel-title" id="dis_order_id" name="dis_order_id">{{data.ivr_message}}</h3>
+          <h3 class="panel-title" id="dis_order_id" name="dis_order_id">{{data.ivr_name}}</h3>
+
         </div>
         <div class="panel-body">
+          <p>Welcome Message: {{data.ivr_message}}</p>
+          <p>No Input Message: {{data.ivr_no_input_message}}</p>
+          <p>Wrong Input Message: {{data.ivr_wrong_input_message}}</p>
+
+          <p>created on : {{data.timestamp}}</p>
+          <p>updated on : {{data.updated}}</p>
         </div>
         <div class="panel-footer">
-                        
+            <a class="btn btn-primary" href="/response/ivr/{{data.id}}/{{data.user_id}}/" role="button">Get Endpoint </a>
+            <a class="btn btn-warning" href="/response/ivr/edit/{{data.id}}/{{data.user_id}}/" role="button">Edit IVR </a>
+            <a class="btn btn-danger" href="/response/ivr/delete/{{data.id}}/{{data.user_id}}" role="button">Delete IVR </a>                       
         </div>
     </div>
 

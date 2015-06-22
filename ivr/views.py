@@ -56,6 +56,7 @@ def login(request):
 		user = auth.authenticate(username=username, password=password)
 		if user is not None:
 			auth.login(request,user)
+			#request.session['user'] = user
 			return HttpResponseRedirect('/')
 			#return render_to_response('index.html',{}, context_instance=RequestContext(request))# HttpResponseRedirect('/blog/profile/')  '/blog/profile/'
 		elif user is None:
@@ -76,6 +77,7 @@ def register(request):
 			new_user.save()
 			new_user.backend='django.contrib.auth.backends.ModelBackend'
 			auth.login(request,new_user)
+			request.session['user'] = new_user
 			# send_email=request.POST.get('email')
 			# redirect, or however you may want to get to the main view
 			return HttpResponseRedirect('/')
@@ -95,42 +97,42 @@ def signout(request):
     context = {}
     return render(request, "index.html",context)
 
-# This file will be played when a caller presses 2.
-PLIVO_SONG = "https://s3.amazonaws.com/plivocloud/music.mp3"
+# # This file will be played when a caller presses 2.
+# PLIVO_SONG = "https://s3.amazonaws.com/plivocloud/music.mp3"
 
-# This is the message that Plivo reads when the caller dials in
-IVR_MESSAGE = "Welcome to the Callhub IVR Demo App. Press 1 to hear a random \
-                joke. Press 2 to listen to a song."
+# # This is the message that Plivo reads when the caller dials in
+# IVR_MESSAGE = "Welcome to the Callhub IVR Demo App. Press 1 to hear a random \
+#                 joke. Press 2 to listen to a song."
 
-# This is the message that Plivo reads when the caller does nothing at all
-NO_INPUT_MESSAGE = "Sorry, I didn't catch that. Please hangup and try again \
-                    later."
+# # This is the message that Plivo reads when the caller does nothing at all
+# NO_INPUT_MESSAGE = "Sorry, I didn't catch that. Please hangup and try again \
+#                     later."
 
-# This is the message that Plivo reads when the caller inputs a wrong number.
-WRONG_INPUT_MESSAGE = "Sorry, it's wrong input."
+# # This is the message that Plivo reads when the caller inputs a wrong number.
+# WRONG_INPUT_MESSAGE = "Sorry, it's wrong input."
 
 
-def ivr_view(request):
-	response = plivoxml.Response()
-	if request.method == 'GET':
-		print request.get_host()
-		getdigits_action_url = 'http://'+request.get_host() + '/response/ivr/' #url_for('ivr', _external=True)
-		getDigits = plivoxml.GetDigits(action=getdigits_action_url, method='POST', timeout=7, numDigits=1, retries=1)
-		getDigits.addSpeak(IVR_MESSAGE)
-		response.add(getDigits)
-		response.addSpeak(NO_INPUT_MESSAGE)
-		return HttpResponse(str(response), content_type="text/xml")
-	elif request.method == 'POST':
-		digit = request.POST['Digits']
+# def ivr_view(request):
+# 	response = plivoxml.Response()
+# 	if request.method == 'GET':
+# 		print request.get_host()
+# 		getdigits_action_url = 'http://'+request.get_host() + '/response/ivr/' #url_for('ivr', _external=True)
+# 		getDigits = plivoxml.GetDigits(action=getdigits_action_url, method='POST', timeout=7, numDigits=1, retries=1)
+# 		getDigits.addSpeak(IVR_MESSAGE)
+# 		response.add(getDigits)
+# 		response.addSpeak(NO_INPUT_MESSAGE)
+# 		return HttpResponse(str(response), content_type="text/xml")
+# 	elif request.method == 'POST':
+# 		digit = request.POST['Digits']
 
-		if digit == "1":
-			response.addSpeak("")
-		elif digit == "2":
-			response.addPlay(PLIVO_SONG)
-		else:
-			response.addSpeak(WRONG_INPUT_MESSAGE)
+# 		if digit == "1":
+# 			response.addSpeak("")
+# 		elif digit == "2":
+# 			response.addPlay(PLIVO_SONG)
+# 		else:
+# 			response.addSpeak(WRONG_INPUT_MESSAGE)
 
-		return HttpResponse(str(response), content_type="text/xml")
+# 		return HttpResponse(str(response), content_type="text/xml")
 
 
 def config_ivr(request):
@@ -141,6 +143,7 @@ def config_ivr(request):
 	if request.method == 'POST':
 		form = ConfigIvrForm(request.POST)
 		configure_ivr = IvrData()
+		configure_ivr.ivr_name = request.POST['ivr_name']
 		configure_ivr.ivr_message = request.POST['welcome_message']
 		configure_ivr.ivr_no_input_message = request.POST['no_input_message']
 		configure_ivr.ivr_wrong_input_message = request.POST['wrong_input_message']
@@ -169,40 +172,62 @@ def config_ivr(request):
 	return render(request,"config_ivr.html", context)
 
 def ivrs(request):
-	Ivrdata = IvrData.objects.all()
+	print request.user.id
+	Ivrdata = IvrData.objects.all().filter(user_id=request.user.id)
 	context = {
-		# "template_title": {{request.user.username}} + "IVRs",
 		"ivrdata": Ivrdata
 	}	
 	return render(request, "list_ivrs.html", context)
 
-# @app.route('/response/ivr/', methods=['GET', 'POST'])
-# def ivr():
-#     response = plivoxml.Response()
-#     if request.method == 'GET':
-#         # GetDigit XML Docs - http://plivo.com/docs/xml/getdigits/
-#         getdigits_action_url = url_for('ivr', _external=True)
-#         getDigits = plivoxml.GetDigits(action=getdigits_action_url,
-#                                        method='POST', timeout=7, numDigits=1,
-#                                        retries=1)
+def ivr_endpoint(request, ivr_id, user_id):
+	Ivrdata = IvrData.objects.get(id=ivr_id)
+	#Ivrdata = Ivrdata.filter(id=ivr_id)
 
-#         getDigits.addSpeak(IVR_MESSAGE)
-#         response.add(getDigits)
-#         response.addSpeak(NO_INPUT_MESSAGE)
+	print Ivrdata.id, Ivrdata.ivr_name, Ivrdata.ivr_message
 
-#         return Response(str(response), mimetype='text/xml')
+	response = plivoxml.Response()
+	if request.method == 'GET':
+		print request.get_host()
+		getdigits_action_url = 'http://'+request.get_host() + '/response/ivr/' #url_for('ivr', _external=True)
+		getDigits = plivoxml.GetDigits(action=getdigits_action_url, method='POST', timeout=7, numDigits=1, retries=1)
+		getDigits.addSpeak(Ivrdata.ivr_message)
+		response.add(getDigits)
+		response.addSpeak(Ivrdata.ivr_no_input_message)
+		return HttpResponse(str(response), content_type="text/xml")
+	elif request.method == 'POST':
+		digit = request.POST['Digits']
 
-#     elif request.method == 'POST':
-#         digit = request.form.get('Digits')
+		if digit == "0":
+			response.addSpeak(Ivrdata.ip_zero)
+		elif digit == "1":
+			#response.addPlay(PLIVO_SONG)
+			response.addSpeak(Ivrdata.ip_one)
+		elif digit == "2":
+			response.addSpeak(Ivrdata.ip_two)
+		elif digit == "3":
+			response.addSpeak(Ivrdata.ip_three)
+		elif digit == "4":
+			response.addSpeak(Ivrdata.ip_four)
+		elif digit == "5":
+			response.addSpeak(Ivrdata.ip_five)
+		elif digit == "6":
+			response.addSpeak(Ivrdata.ip_six)
+		elif digit == "7":
+			response.addSpeak(Ivrdata.ip_seven)
+		elif digit == "8":
+			response.addSpeak(Ivrdata.ip_eight)
+		elif digit == "9":
+			response.addSpeak(Ivrdata.ip_nine)
+		else:
+			response.addSpeak(WRONG_INPUT_MESSAGE)
 
-#         if digit == "1":
-#             # Fetch a random joke using the Reddit API.
-#             joke = joke_from_reddit()
-#             response.addSpeak(joke)
-#         elif digit == "2":
-#             # Listen to a song
-#             response.addPlay(PLIVO_SONG)
-#         else:
-#             response.addSpeak(WRONG_INPUT_MESSAGE)
+		return HttpResponse(str(response), content_type="text/xml")
 
-#         return Response(str(response), mimetype='text/xml')
+#def ivr_edit(request, ivr_id, user_id):
+
+
+def ivr_delete(request, ivr_id, user_id):
+	Ivrdata = IvrData.objects.get(pk=ivr_id)
+	Ivrdata.delete()
+	return HttpResponseRedirect('/response/list/ivr/')
+

@@ -5,6 +5,7 @@ from datetime import datetime
 # Create your models here.
 
 class IvrData(models.Model):
+	ivr_name = models.CharField(max_length=120)
 	ivr_message = models.CharField(max_length=500)
 	ivr_no_input_message = models.TextField(max_length=500)
 	ivr_wrong_input_message = models.TextField(max_length=500)

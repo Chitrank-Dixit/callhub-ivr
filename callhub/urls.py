@@ -25,8 +25,12 @@ urlpatterns = [
     url(r"^login/", "ivr.views.login", name="login"),
     url(r"^signout/", "ivr.views.signout", name="signout"),
     url(r"^request/config_ivr/", "ivr.views.config_ivr", name="config_ivr"),
-    url(r"^response/ivr/", "ivr.views.ivr_view", name="ivr_view"),
-    url(r"^response/list/ivr" , "ivr.views.ivrs", name="ivrs"),
+    # url(r"^response/ivr/", "ivr.views.ivr_view", name="ivr_view"),
+    url(r"^response/ivr/(?P<ivr_id>\w+)/(?P<user_id>\w+)", "ivr.views.ivr_endpoint", name="ivr_endpoint"),
+    url(r"^response/ivr/edit/(?P<ivr_id>\w+)/(?P<user_id>\w+)", "ivr.views.ivr_edit", name="ivr_edit"),
+    url(r"^response/ivr/delete/(?P<ivr_id>\w+)/(?P<user_id>\w+)", "ivr.views.ivr_delete", name="ivr_delete"),
+    url(r"^response/ivr/list/" , "ivr.views.ivrs", name="ivrs"),
+    # (?P<user_id>\w+)
     #url(r"^contact/$", "ivr.views.contact", name="contact")
 
     url(r'^api/', include('api.urls')),

@@ -14,8 +14,15 @@
 </div>
 
 <div class="col-md-6">
-	<h1>Config Ivr</h1>
+	<h1>Add Ivr</h1>
 	<form name="config_ivr" id="configivr_form" action="/request/config_ivr/" method="post">{% csrf_token %}
+
+        <div class="form-group">
+    
+        <label>IVR Name</label>
+        <input type="text" class="form-control col-sm-3" name="ivr_name" id="ivr_name" placeholder="Enter the Name of an IVR" required>
+        <br><br><br><br>
+        </div>
 
         <div class="form-group">
     
