@@ -10,6 +10,9 @@
 
     <title>{% block head_title %}Callhub IVR{% endblock %} </title>
     {% include 'head_css.html' %}
+
+    {% block style %}
+    {% endblock %}
     </head>
 
   <body>
@@ -27,4 +30,6 @@
 
     {% include 'javascript.html' %}
 
+{% block scripts %}
+{% endblock %}
 </body></html>

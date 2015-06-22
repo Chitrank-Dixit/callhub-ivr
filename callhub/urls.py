@@ -21,8 +21,13 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r"^$", "ivr.views.home", name="home"),
+    url(r"^register/", "ivr.views.register", name="register"),
+    url(r"^login/", "ivr.views.login", name="login"),
+    url(r"^signout/", "ivr.views.signout", name="signout"),
     url(r"^response/ivr/", "ivr.views.ivr_view", name="ivr_view"),
     #url(r"^contact/$", "ivr.views.contact", name="contact")
+
+    url(r'^api/', include('api.urls')),
 ]
 
 if settings.DEBUG:

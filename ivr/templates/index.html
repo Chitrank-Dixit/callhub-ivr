@@ -3,11 +3,14 @@
 {% block head_title %}Welcome | {{ block.super }}{% endblock %}
 {% block jumbotron %}
 <div class="jumbotron">
-    <h1>{{template_title}} to Callhub IVR</h1>
+    <h1>Welcome to Callhub IVR</h1>
     <p>Hello This is the Callhub Interactive Voice Response System</p>
     <p></p>
     <p>
+    	{% if user.is_authenticated %}
      <a class="btn btn-lg btn-primary" href="/response/ivr/" role="button">Get IVR Endpoint</a> 
+     <a class="btn btn-lg btn-primary" href="/response/ivr/" role="button">Configure IVR</a> 
+     	{% endif %}
     </p>
 </div>
 {% endblock %}

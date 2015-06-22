@@ -1,0 +1,27 @@
+{
+  "name": "callhub",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Chitrank-Dixit/callhub-ivr",
+  "authors": [
+    "Chitrank-Dixit <chitrankdixit@gmail.com>"
+  ],
+  "description": "an interactive voice response application",
+  "main": "manage.py",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "python",
+    "django",
+    "rest",
+    "angular"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
