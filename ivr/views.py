@@ -163,7 +163,7 @@ def config_ivr(request):
 		configure_ivr.save()
 		print request.user
 
-		return HttpResponseRedirect('/')
+		return HttpResponseRedirect('/response/ivr/list/')
 		# if form.is_valid():
 		# 	print "hii2"
 		# 	instance = form.save(commit=False)
@@ -179,55 +179,111 @@ def ivrs(request):
 	}	
 	return render(request, "list_ivrs.html", context)
 
-def ivr_endpoint(request, ivr_id, user_id):
+
+def ivr_edit(request, ivr_id, user_id):
 	Ivrdata = IvrData.objects.get(id=ivr_id)
-	#Ivrdata = Ivrdata.filter(id=ivr_id)
+	context = {
+		"template_title": "Ivr Edit",
+		"ivr_name": Ivrdata.ivr_name,
+		"ivr_message": Ivrdata.ivr_message,
+		"ivr_no_input_message": Ivrdata.ivr_no_input_message,
+		"ivr_wrong_input_message": Ivrdata.ivr_wrong_input_message,
+		"ip_zero": Ivrdata.ip_zero,
+		"ip_one": Ivrdata.ip_one,
+		"ip_two": Ivrdata.ip_two,
+		"ip_three": Ivrdata.ip_three,
+		"ip_four": Ivrdata.ip_four,
+		"ip_five": Ivrdata.ip_five,
+		"ip_six": Ivrdata.ip_six,
+		"ip_seven": Ivrdata.ip_seven,
+		"ip_eight": Ivrdata.ip_eight,
+		"ip_nine": Ivrdata.ip_nine,
+		"ivr_id" : Ivrdata.id,
+		"user_id" :Ivrdata.user_id
+	}
 
-	print Ivrdata.id, Ivrdata.ivr_name, Ivrdata.ivr_message
 
-	response = plivoxml.Response()
-	if request.method == 'GET':
-		print request.get_host()
-		getdigits_action_url = 'http://'+request.get_host() + '/response/ivr/' #url_for('ivr', _external=True)
-		getDigits = plivoxml.GetDigits(action=getdigits_action_url, method='POST', timeout=7, numDigits=1, retries=1)
-		getDigits.addSpeak(Ivrdata.ivr_message)
-		response.add(getDigits)
-		response.addSpeak(Ivrdata.ivr_no_input_message)
-		return HttpResponse(str(response), content_type="text/xml")
-	elif request.method == 'POST':
-		digit = request.POST['Digits']
+	if request.method == 'POST':
+		form = ConfigIvrForm(request.POST)
+		Ivrdata.ivr_name = request.POST['ivr_name']
+		Ivrdata.ivr_message = request.POST['welcome_message']
+		Ivrdata.ivr_no_input_message = request.POST['no_input_message']
+		Ivrdata.ivr_wrong_input_message = request.POST['wrong_input_message']
+		Ivrdata.ip_zero = request.POST['zeroip_message']  if (request.POST['zeroip_message']!='') else 'Invalid Input'
+		Ivrdata.ip_one = request.POST['oneip_message']  if (request.POST['oneip_message']!='') else 'Invalid Input'
+		Ivrdata.ip_two = request.POST['twoip_message']  if (request.POST['twoip_message']!='') else 'Invalid Input'
+		Ivrdata.ip_three = request.POST['threeip_message']  if (request.POST['threeip_message']!='') else 'Invalid Input'
+		Ivrdata.ip_four = request.POST['fourip_message']  if (request.POST['fourip_message']!='') else 'Invalid Input'
+		Ivrdata.ip_five = request.POST['fiveip_message']  if (request.POST['fiveip_message']!='') else 'Invalid Input'
+		Ivrdata.ip_six = request.POST['sixip_message']  if (request.POST['sixip_message']!='') else 'Invalid Input'
+		Ivrdata.ip_seven = request.POST['sevenip_message']  if (request.POST['sevenip_message']!='') else 'Invalid Input'
+		Ivrdata.ip_eight = request.POST['eightip_message']  if (request.POST['eightip_message']!='') else 'Invalid Input'
+		Ivrdata.ip_nine = request.POST['nineip_message']  if (request.POST['nineip_message']!='') else 'Invalid Input'
+		Ivrdata.save()
 
-		if digit == "0":
-			response.addSpeak(Ivrdata.ip_zero)
-		elif digit == "1":
-			#response.addPlay(PLIVO_SONG)
-			response.addSpeak(Ivrdata.ip_one)
-		elif digit == "2":
-			response.addSpeak(Ivrdata.ip_two)
-		elif digit == "3":
-			response.addSpeak(Ivrdata.ip_three)
-		elif digit == "4":
-			response.addSpeak(Ivrdata.ip_four)
-		elif digit == "5":
-			response.addSpeak(Ivrdata.ip_five)
-		elif digit == "6":
-			response.addSpeak(Ivrdata.ip_six)
-		elif digit == "7":
-			response.addSpeak(Ivrdata.ip_seven)
-		elif digit == "8":
-			response.addSpeak(Ivrdata.ip_eight)
-		elif digit == "9":
-			response.addSpeak(Ivrdata.ip_nine)
-		else:
-			response.addSpeak(WRONG_INPUT_MESSAGE)
-
-		return HttpResponse(str(response), content_type="text/xml")
-
-#def ivr_edit(request, ivr_id, user_id):
+		return HttpResponseRedirect('/response/ivr/list/')
+	print Ivrdata.id, Ivrdata.ivr_message
+	return render(request, "ivr_edit.html", context)
 
 
 def ivr_delete(request, ivr_id, user_id):
-	Ivrdata = IvrData.objects.get(pk=ivr_id)
+	Ivrdata = IvrData.objects.get(id=ivr_id)
 	Ivrdata.delete()
-	return HttpResponseRedirect('/response/list/ivr/')
+	return HttpResponseRedirect('/response/ivr/list/')
+
+# def ivr_endpoint(request, ivr_id, user_id):
+# 	print ivr_id, user_id
+# 	Ivrdata = IvrData.objects.get(id=ivr_id)
+# 	print Ivrdata
+# 	#Ivrdata = Ivrdata.filter(id=ivr_id)
+# 	context = {
+# 		"working": "yes"
+# 	}
+
+# 	print Ivrdata.id, Ivrdata.ivr_name, Ivrdata.ivr_message
+
+# 	response = plivoxml.Response()
+# 	if request.method == 'GET':
+# 		print request.get_host()
+# 		getdigits_action_url = 'http://'+request.get_host() + '/response/ivr/' #url_for('ivr', _external=True)
+# 		getDigits = plivoxml.GetDigits(action=getdigits_action_url, method='POST', timeout=7, numDigits=1, retries=1)
+# 		getDigits.addSpeak(Ivrdata.ivr_message)
+# 		response.add(getDigits)
+# 		response.addSpeak(Ivrdata.ivr_no_input_message)
+# 		return HttpResponse(str(response), content_type="text/xml")
+
+# 	elif request.method == 'POST':
+# 		digit = request.POST['Digits']
+
+# 		if digit == "0":
+# 			response.addSpeak(Ivrdata.ip_zero)
+# 		elif digit == "1":
+# 			#response.addPlay(PLIVO_SONG)
+# 			response.addSpeak(Ivrdata.ip_one)
+# 		elif digit == "2":
+# 			response.addSpeak(Ivrdata.ip_two)
+# 		elif digit == "3":
+# 			response.addSpeak(Ivrdata.ip_three)
+# 		elif digit == "4":
+# 			response.addSpeak(Ivrdata.ip_four)
+# 		elif digit == "5":
+# 			response.addSpeak(Ivrdata.ip_five)
+# 		elif digit == "6":
+# 			response.addSpeak(Ivrdata.ip_six)
+# 		elif digit == "7":
+# 			response.addSpeak(Ivrdata.ip_seven)
+# 		elif digit == "8":
+# 			response.addSpeak(Ivrdata.ip_eight)
+# 		elif digit == "9":
+# 			response.addSpeak(Ivrdata.ip_nine)
+# 		else:
+# 			response.addSpeak(WRONG_INPUT_MESSAGE)
+
+# 		return HttpResponse(str(response), content_type="text/xml")
+	
+
+
+
+
+
 
