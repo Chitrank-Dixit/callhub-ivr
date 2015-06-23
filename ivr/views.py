@@ -231,55 +231,55 @@ def ivr_delete(request, ivr_id, user_id):
 	Ivrdata.delete()
 	return HttpResponseRedirect('/response/ivr/list/')
 
-# def ivr_endpoint(request, ivr_id, user_id):
-# 	print ivr_id, user_id
-# 	Ivrdata = IvrData.objects.get(id=ivr_id)
-# 	print Ivrdata
-# 	#Ivrdata = Ivrdata.filter(id=ivr_id)
-# 	context = {
-# 		"working": "yes"
-# 	}
+def ivr_endpoint(request, ivr_id, user_id):
+	print ivr_id, user_id
+	Ivrdata = IvrData.objects.get(id=ivr_id)
+	print Ivrdata
+	#Ivrdata = Ivrdata.filter(id=ivr_id)
+	context = {
+		"working": "yes"
+	}
 
-# 	print Ivrdata.id, Ivrdata.ivr_name, Ivrdata.ivr_message
+	print Ivrdata.id, Ivrdata.ivr_name, Ivrdata.ivr_message
 
-# 	response = plivoxml.Response()
-# 	if request.method == 'GET':
-# 		print request.get_host()
-# 		getdigits_action_url = 'http://'+request.get_host() + '/response/ivr/' #url_for('ivr', _external=True)
-# 		getDigits = plivoxml.GetDigits(action=getdigits_action_url, method='POST', timeout=7, numDigits=1, retries=1)
-# 		getDigits.addSpeak(Ivrdata.ivr_message)
-# 		response.add(getDigits)
-# 		response.addSpeak(Ivrdata.ivr_no_input_message)
-# 		return HttpResponse(str(response), content_type="text/xml")
+	response = plivoxml.Response()
+	if request.method == 'GET':
+		print request.get_host()
+		getdigits_action_url = 'http://'+request.get_host() + '/response/ivr/' #url_for('ivr', _external=True)
+		getDigits = plivoxml.GetDigits(action=getdigits_action_url, method='POST', timeout=7, numDigits=1, retries=1)
+		getDigits.addSpeak(Ivrdata.ivr_message)
+		response.add(getDigits)
+		response.addSpeak(Ivrdata.ivr_no_input_message)
+		return HttpResponse(str(response), content_type="text/xml")
 
-# 	elif request.method == 'POST':
-# 		digit = request.POST['Digits']
+	elif request.method == 'POST':
+		digit = request.POST['Digits']
 
-# 		if digit == "0":
-# 			response.addSpeak(Ivrdata.ip_zero)
-# 		elif digit == "1":
-# 			#response.addPlay(PLIVO_SONG)
-# 			response.addSpeak(Ivrdata.ip_one)
-# 		elif digit == "2":
-# 			response.addSpeak(Ivrdata.ip_two)
-# 		elif digit == "3":
-# 			response.addSpeak(Ivrdata.ip_three)
-# 		elif digit == "4":
-# 			response.addSpeak(Ivrdata.ip_four)
-# 		elif digit == "5":
-# 			response.addSpeak(Ivrdata.ip_five)
-# 		elif digit == "6":
-# 			response.addSpeak(Ivrdata.ip_six)
-# 		elif digit == "7":
-# 			response.addSpeak(Ivrdata.ip_seven)
-# 		elif digit == "8":
-# 			response.addSpeak(Ivrdata.ip_eight)
-# 		elif digit == "9":
-# 			response.addSpeak(Ivrdata.ip_nine)
-# 		else:
-# 			response.addSpeak(WRONG_INPUT_MESSAGE)
+		if digit == "0":
+			response.addSpeak(Ivrdata.ip_zero)
+		elif digit == "1":
+			#response.addPlay(PLIVO_SONG)
+			response.addSpeak(Ivrdata.ip_one)
+		elif digit == "2":
+			response.addSpeak(Ivrdata.ip_two)
+		elif digit == "3":
+			response.addSpeak(Ivrdata.ip_three)
+		elif digit == "4":
+			response.addSpeak(Ivrdata.ip_four)
+		elif digit == "5":
+			response.addSpeak(Ivrdata.ip_five)
+		elif digit == "6":
+			response.addSpeak(Ivrdata.ip_six)
+		elif digit == "7":
+			response.addSpeak(Ivrdata.ip_seven)
+		elif digit == "8":
+			response.addSpeak(Ivrdata.ip_eight)
+		elif digit == "9":
+			response.addSpeak(Ivrdata.ip_nine)
+		else:
+			response.addSpeak(WRONG_INPUT_MESSAGE)
 
-# 		return HttpResponse(str(response), content_type="text/xml")
+		return HttpResponse(str(response), content_type="text/xml")
 	
 
 
