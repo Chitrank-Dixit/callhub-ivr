@@ -48,7 +48,8 @@ INSTALLED_APPS = (
     'rest_framework',
     # my apps
     'ivr',
-    'api'
+    
+
 )
 
 MIDDLEWARE_CLASSES = (

@@ -19,6 +19,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 
 urlpatterns = [
+    
+    
     url(r'^admin/', include(admin.site.urls)),
     url(r"^$", "ivr.views.home", name="home"),
     url(r"^register/", "ivr.views.register", name="register"),
@@ -34,7 +36,6 @@ urlpatterns = [
     # (?P<user_id>\w+)
     #url(r"^contact/$", "ivr.views.contact", name="contact")
 
-    url(r'^api/', include('api.urls')),
 ]
 
 if settings.DEBUG:
