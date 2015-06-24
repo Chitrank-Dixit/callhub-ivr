@@ -20,5 +20,10 @@
   "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/Chitrank-Dixit/callhub-ivr/issues"
+  },
+  "dependencies": {
+    "gulp": "~3.9.0",
+    "gulp-uglify": "~1.2.0",
+    "gulp-ng-annotate": "~1.0.0"
   }
 }

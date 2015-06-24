@@ -14,24 +14,39 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf import settings
-from django.conf.urls import include, url
+from django.conf.urls import include, url, patterns
 from django.conf.urls.static import static
 from django.contrib import admin
+
+from rest_framework_nested import routers
+from callhub.views import IndexView
+from api.views import AccountViewSet
+
+router = routers.SimpleRouter()
+router.register(r'accounts', AccountViewSet)
+
+urlpatterns = patterns(
+     '',
+    # ... URLs
+    url(r'^api/v1/', include(router.urls)),
+
+    url('^.*$', IndexView.as_view(), name='index'),
+)
 
 urlpatterns = [
     
     
     url(r'^admin/', include(admin.site.urls)),
-    url(r"^$", "ivr.views.home", name="home"),
-    url(r"^register/", "ivr.views.register", name="register"),
-    url(r"^login/", "ivr.views.login", name="login"),
-    url(r"^signout/", "ivr.views.signout", name="signout"),
-    url(r"^request/config_ivr/", "ivr.views.config_ivr", name="config_ivr"),
-    url(r"^request/ivr/edit/(?P<ivr_id>[0-9])/(?P<user_id>[0-9])/", "ivr.views.ivr_edit", name="ivr_edit"),
-    # url(r"^response/ivr/", "ivr.views.ivr_view", name="ivr_view"),
-    url(r"^response/ivr/(?P<ivr_id>[0-9])/(?P<user_id>[0-9])/", "ivr.views.ivr_endpoint", name="ivr_endpoint"),
-    url(r"^response/ivr/list/" , "ivr.views.ivrs", name="ivrs"),
-    url(r"^response/ivr/delete/(?P<ivr_id>[0-9])/(?P<user_id>[0-9])/", "ivr.views.ivr_delete", name="ivr_delete"),
+    # url(r"^$", "ivr.views.home", name="home"),
+    # url(r"^register/", "ivr.views.register", name="register"),
+    # url(r"^login/", "ivr.views.login", name="login"),
+    # url(r"^signout/", "ivr.views.signout", name="signout"),
+    # url(r"^request/config_ivr/", "ivr.views.config_ivr", name="config_ivr"),
+    # url(r"^request/ivr/edit/(?P<ivr_id>[0-9])/(?P<user_id>[0-9])/", "ivr.views.ivr_edit", name="ivr_edit"),
+    # # url(r"^response/ivr/", "ivr.views.ivr_view", name="ivr_view"),
+    # url(r"^response/ivr/(?P<ivr_id>[0-9])/(?P<user_id>[0-9])/", "ivr.views.ivr_endpoint", name="ivr_endpoint"),
+    # url(r"^response/ivr/list/" , "ivr.views.ivrs", name="ivrs"),
+    # url(r"^response/ivr/delete/(?P<ivr_id>[0-9])/(?P<user_id>[0-9])/", "ivr.views.ivr_delete", name="ivr_delete"),
     
     # (?P<user_id>\w+)
     #url(r"^contact/$", "ivr.views.contact", name="contact")

@@ -21,7 +21,7 @@ class IvrData(models.Model):
 	ip_nine = models.CharField(max_length=500)
 	timestamp = models.DateTimeField(auto_now_add = True)#, auto_now=False, default = now)
 	updated = models.DateTimeField(auto_now_add = True)#, auto_now=False, default = now)
-	user = models.ForeignKey(User)
+	user = models.ForeignKey(User, related_name = "site_Ivruser")
 
 
 
