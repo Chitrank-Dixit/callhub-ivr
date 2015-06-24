@@ -10,6 +10,10 @@ from django.http import HttpResponseRedirect, HttpResponse , HttpRequest
 # our django forms
 from forms import UserForm , SignedUserForm, ConfigIvrForm
 
+
+# flash messages in Django
+from django.contrib import messages
+
 # importing models
 from models import IvrData
 
@@ -22,54 +26,34 @@ from utils import joke_from_reddit
 
 def home(request):
 	title = "Welcome"
-	# if request.user.is_authenticated():
-	# 	title = "My Title %s" % (request.user)
-	# add a form
-
-	# form = SignUpForm(request.POST or None)
 	context = {
 		"template_title": title,
-	 	#"form": form
 	}
-	# if request.method == "POST":
-	# 	print "Hii",request.POST['email'], request.POST['full_name'] # ,request.POST.email, request.POST.full_name
-	# if form.is_valid():
-	# 	instance = form.save(commit=False)
-	# 	instance.save()
-	# 	print instance.email, instance.timestamp
-	# 	context = {
-	# 		"template_title": "Thank You"
-	# 	}
-		
+			
 	return render(request ,"index.html",context)
 
 def login(request):
 	title = "Login"
 	context = {
 		"template_title": title,
-	 	#"form": form
 	}
-	print "Heeee"
 	if request.method == 'POST':
 		username=request.POST.get('username')
 		password=request.POST.get('password')
 		user = auth.authenticate(username=username, password=password)
 		if user is not None:
 			auth.login(request,user)
-			#request.session['user'] = user
+			messages.success(request, request.POST.get('username')+' logged in')
 			return HttpResponseRedirect('/')
-			#return render_to_response('index.html',{}, context_instance=RequestContext(request))# HttpResponseRedirect('/blog/profile/')  '/blog/profile/'
 		elif user is None:
-			print 'hii'
-			#return HttpResponseRedirect('/login')
-			#return render_to_response('index.html',{}, context_instance=RequestContext(request))# HttpResponseRedirect('home')  # '/blog/home/'
+			messages.error(request, 'Incorrect Username or Password')
+			return HttpResponseRedirect('/login' ,messages)
 	return render(request ,"login.html",context)
 
 
 def register(request):
 	title = "Register"
 	send_email=''
-	print "Heeee"
 	if request.method == 'POST':
 		form = UserForm(request.POST)
 		if form.is_valid():
@@ -77,18 +61,15 @@ def register(request):
 			new_user.save()
 			new_user.backend='django.contrib.auth.backends.ModelBackend'
 			auth.login(request,new_user)
-			request.session['user'] = new_user
-			# send_email=request.POST.get('email')
-			# redirect, or however you may want to get to the main view
+			messages.success(request, 'Account with username '+request.POST.get('username')+' has been created')
 			return HttpResponseRedirect('/')
 		else:
 			form = UserForm()
+			messages.error(request, 'User already created please choose different username and email')
+			return HttpResponseRedirect('/register' ,messages)
 
-	#send_mail('Subject here', 'Here is the message.', 'chitrankdixit@gmail.com',
-	#[send_email], fail_silently=False)
 	context = {
 	    "template_title": title,
-	    #"form": form
 	}
 	return render(request ,"register.html",context)
 
@@ -97,42 +78,6 @@ def signout(request):
     context = {}
     return render(request, "index.html",context)
 
-# # This file will be played when a caller presses 2.
-# PLIVO_SONG = "https://s3.amazonaws.com/plivocloud/music.mp3"
-
-# # This is the message that Plivo reads when the caller dials in
-# IVR_MESSAGE = "Welcome to the Callhub IVR Demo App. Press 1 to hear a random \
-#                 joke. Press 2 to listen to a song."
-
-# # This is the message that Plivo reads when the caller does nothing at all
-# NO_INPUT_MESSAGE = "Sorry, I didn't catch that. Please hangup and try again \
-#                     later."
-
-# # This is the message that Plivo reads when the caller inputs a wrong number.
-# WRONG_INPUT_MESSAGE = "Sorry, it's wrong input."
-
-
-# def ivr_view(request):
-# 	response = plivoxml.Response()
-# 	if request.method == 'GET':
-# 		print request.get_host()
-# 		getdigits_action_url = 'http://'+request.get_host() + '/response/ivr/' #url_for('ivr', _external=True)
-# 		getDigits = plivoxml.GetDigits(action=getdigits_action_url, method='POST', timeout=7, numDigits=1, retries=1)
-# 		getDigits.addSpeak(IVR_MESSAGE)
-# 		response.add(getDigits)
-# 		response.addSpeak(NO_INPUT_MESSAGE)
-# 		return HttpResponse(str(response), content_type="text/xml")
-# 	elif request.method == 'POST':
-# 		digit = request.POST['Digits']
-
-# 		if digit == "1":
-# 			response.addSpeak("")
-# 		elif digit == "2":
-# 			response.addPlay(PLIVO_SONG)
-# 		else:
-# 			response.addSpeak(WRONG_INPUT_MESSAGE)
-
-# 		return HttpResponse(str(response), content_type="text/xml")
 
 
 def config_ivr(request):
@@ -164,11 +109,6 @@ def config_ivr(request):
 		print request.user
 
 		return HttpResponseRedirect('/response/ivr/list/')
-		# if form.is_valid():
-		# 	print "hii2"
-		# 	instance = form.save(commit=False)
-		# 	print form.cleaned_data.get("welcome_message")
-		# 	instance.save();
 	return render(request,"config_ivr.html", context)
 
 def ivrs(request):
@@ -258,7 +198,6 @@ def ivr_endpoint(request, ivr_id, user_id):
 		if digit == "0":
 			response.addSpeak(Ivrdata.ip_zero)
 		elif digit == "1":
-			#response.addPlay(PLIVO_SONG)
 			response.addSpeak(Ivrdata.ip_one)
 		elif digit == "2":
 			response.addSpeak(Ivrdata.ip_two)

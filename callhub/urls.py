@@ -34,7 +34,7 @@ urlpatterns = [
     # (?P<user_id>\w+)
     #url(r"^contact/$", "ivr.views.contact", name="contact")
 
-    url(r'^api/', include('api.urls')),
+    #url(r'^api/', include('api.urls')),
 ]
 
 if settings.DEBUG:

@@ -15,34 +15,36 @@
 
 <div class="col-md-6">
 	<h1>Add Ivr</h1>
-	<form name="config_ivr" id="configivr_form" action="/request/config_ivr/" method="post">{% csrf_token %}
+	<form data-toggle="validator" name="config_ivr" id="configivr_form" action="/request/config_ivr/" method="post">{% csrf_token %}
 
         <div class="form-group">
     
         <label>IVR Name</label>
-        <input type="text" class="form-control col-sm-3" name="ivr_name" id="ivr_name" placeholder="Enter the Name of an IVR" required>
-        <br><br><br><br>
+        <input type="text" class="form-control col-sm-3" name="ivr_name" id="ivr_name" placeholder="Enter the Name of an IVR" data-error="This is Required" required>
+        <div class="help-block with-errors"></div>
+        <br><br>
         </div>
 
         <div class="form-group">
     
         <label>Welcome Message</label>
-        <textarea class="form-control col-sm-3" name="welcome_message" id="welcome_message" placeholder="Enter the Welcome Message " required></textarea>
-        <br><br><br><br>
+        <textarea class="form-control col-sm-3" name="welcome_message" id="welcome_message" placeholder="Enter the Welcome Message " data-error="This is Required"  required></textarea>
+        <div class="help-block with-errors"></div>
+        <br><br>
         </div>
 
 		    
         <div class="form-group">
-          <label> No Input Message </label> <textarea class="form-control col-sm-3" name="no_input_message" id="no_input_message" placeholder="Enter the message when user does not enter any number" required></textarea>
-          
-          <br><br><br><br>
+          <label> No Input Message </label> <textarea class="form-control col-sm-3" name="no_input_message" id="no_input_message" placeholder="Enter the message when user does not enter any number" data-error="This is Required" required></textarea>
+          <div class="help-block with-errors"></div>
+          <br><br>
         </div>
 
         <div class="form-group">
           <label> Wrong Input Message </label> 
-          <textarea class="form-control col-sm-3" name="wrong_input_message" id="wrong_input_message" placeholder="Enter the Message when wrong input is received from the caller" required></textarea>
-                  
-          <br><br><br><br>
+          <textarea class="form-control col-sm-3" name="wrong_input_message" id="wrong_input_message" placeholder="Enter the Message when wrong input is received from the caller" data-error="This is Required" required></textarea>
+          <div class="help-block with-errors"></div>
+          <br><br>
         </div>
 
         <div class="form-group">
