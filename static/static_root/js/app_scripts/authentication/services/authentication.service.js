@@ -133,6 +133,7 @@
     * @memberOf app.authentication.services.Authentication
     */
     function register(email, password, username) {
+      console.log("Hello",email, password, username);
       return $http.post('/api/v1/accounts/', {
         username: username,
         password: password,

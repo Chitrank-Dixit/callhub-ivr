@@ -19,24 +19,38 @@ from django.conf.urls.static import static
 from django.contrib import admin
 
 from rest_framework_nested import routers
+from api.views import AccountViewSet, LoginView, LogoutView, AccountPostsViewSet, PostViewSet
 from callhub.views import IndexView
-from api.views import AccountViewSet
+
+ 
+
+
 
 router = routers.SimpleRouter()
 router.register(r'accounts', AccountViewSet)
-
-urlpatterns = patterns(
-     '',
-    # ... URLs
-    url(r'^api/v1/', include(router.urls)),
-
-    url('^.*$', IndexView.as_view(), name='index'),
+router.register(r'posts', PostViewSet)
+accounts_router = routers.NestedSimpleRouter(
+    router, r'accounts', lookup='account'
 )
+
+accounts_router.register(r'posts', AccountPostsViewSet)
+# urlpatterns = patterns(
+#      '',
+#     # ... URLs
+#     url(r'^api/v1/', include(router.urls)),
+
+#     url('^.*$', IndexView.as_view(), name='index'),
+# )
 
 urlpatterns = [
     
     
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^api/v1/', include(router.urls)),
+    url(r'^api/v1/', include(accounts_router.urls)),
+    url(r'^api/v1/auth/login/$', LoginView.as_view(), name='login'),
+    url(r'^api/v1/auth/logout/$', LogoutView.as_view(), name='logout'),
+    url('^.*$', IndexView.as_view(), name='index'),
     # url(r"^$", "ivr.views.home", name="home"),
     # url(r"^register/", "ivr.views.register", name="register"),
     # url(r"^login/", "ivr.views.login", name="login"),

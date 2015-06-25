@@ -7,9 +7,11 @@ from django.contrib.auth import update_session_auth_hash
 from rest_framework import serializers
 
 from django.contrib.auth.models import User
+from api.models import Post
 
 
 class AccountSerializer(serializers.ModelSerializer):
+    print "In AccountSerializer"
     password = serializers.CharField(write_only=True, required=False)
     #confirm_password = serializers.CharField(write_only=True, required=False)
 
@@ -20,6 +22,7 @@ class AccountSerializer(serializers.ModelSerializer):
         read_only_fields = ('date_joined', 'last_login',)
 
         def create(self, validated_data):
+            print "created"
             return User.objects.create(**validated_data)
 
         def update(self, instance, validated_data):
@@ -38,3 +41,17 @@ class AccountSerializer(serializers.ModelSerializer):
             update_session_auth_hash(self.context.get('request'), instance)
 
             return instance
+
+class PostSerializer(serializers.ModelSerializer):
+    author = AccountSerializer(read_only=True, required=False)
+
+    class Meta:
+        model = Post
+
+        fields = ('id', 'author', 'content', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'created_at', 'updated_at')
+
+    def get_validation_exclusions(self, *args, **kwargs):
+        exclusions = super(PostSerializer, self).get_validation_exclusions()
+
+        return exclusions + ['author']
