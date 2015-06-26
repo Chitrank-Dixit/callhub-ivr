@@ -68,9 +68,9 @@
      * @returns {Promise}
      * @memberOf app.authentication.services.Authentication
      */
-    function login(email, password) {
+    function login(username, password) {
       return $http.post('/api/v1/auth/login/', {
-        email: email, password: password
+        username: username, password: password
       }).then(loginSuccessFn, loginErrorFn);
 
       /**
@@ -88,7 +88,7 @@
        * @desc Log "Epic failure!" to the console
        */
       function loginErrorFn(data, status, headers, config) {
-        console.error('Epic failure!');
+        console.error('Epic failure!', data);
       }
     }
 
@@ -133,7 +133,6 @@
     * @memberOf app.authentication.services.Authentication
     */
     function register(email, password, username) {
-      console.log("Hello",email, password, username);
       return $http.post('/api/v1/accounts/', {
         username: username,
         password: password,

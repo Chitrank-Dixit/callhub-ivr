@@ -1,0 +1,6 @@
+ from django.test.client import Client
+ client = Client()
+
+ resp = client.post('/api/v1/accounts/',data={'email': 'best@best.com' , 'username': 'best' , 'password': 'best'}, follow=True)
+
+ resp = client.post('/api/v1/auth/login/',data={'email': 'best@best.com', 'password': 'best'}, follow=True)

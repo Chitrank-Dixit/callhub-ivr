@@ -68,9 +68,9 @@
      * @returns {Promise}
      * @memberOf app.authentication.services.Authentication
      */
-    function login(email, password) {
+    function login(username, password) {
       return $http.post('/api/v1/auth/login/', {
-        email: email, password: password
+        username: username, password: password
       }).then(loginSuccessFn, loginErrorFn);
 
       /**

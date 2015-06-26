@@ -31,9 +31,9 @@ class AccountViewSet(viewsets.ModelViewSet):
         return (permissions.IsAuthenticated(), IsAccountOwner(),)
 
     def create(self, request):
-        print "create mein aaa gaya", self.serializer_class(data=request.data)," ji"
+        #print "create mein aaa gaya", self.serializer_class(data=request.data)," ji"
         serializer = self.serializer_class(data=request.data)
-        print request.data
+        print serializer
         if serializer.is_valid():
             print "users mein aa gaya"
             User.objects.create_user(**serializer.validated_data)
@@ -46,20 +46,21 @@ class AccountViewSet(viewsets.ModelViewSet):
         }, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginView(views.APIView):
+    print 'In log in view'
+    queryset = User.objects.all()
     def post(self, request, format=None):
         data = json.loads(request.body)
-        print "In Login"
-        email = data.get('email', None)
+        username = data.get('username', None)
         password = data.get('password', None)
-
-        account = authenticate(email=email, password=password)
-
+        print "In Login", data
+        account = authenticate(username=username, password=password)
+        print account
         if account is not None:
             if account.is_active:
                 login(request, account)
 
                 serialized = AccountSerializer(account)
-
+                print 'yeah'
                 return Response(serialized.data)
             else:
                 return Response({

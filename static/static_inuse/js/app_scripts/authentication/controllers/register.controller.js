@@ -39,6 +39,7 @@
      * @memberOf app.authentication.controllers.RegisterController
      */
     function register() {
+      console.log("hello");
       Authentication.register(vm.email, vm.password, vm.username);
     }
   }

@@ -39,7 +39,8 @@
     * @memberOf app.authentication.controllers.LoginController
     */
     function login() {
-      Authentication.login(vm.email, vm.password);
+      console.log("Hello");
+      Authentication.login(vm.username, vm.password);
     }
   }
 })();

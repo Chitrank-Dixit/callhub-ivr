@@ -29,11 +29,12 @@ from callhub.views import IndexView
 router = routers.SimpleRouter()
 router.register(r'accounts', AccountViewSet)
 router.register(r'posts', PostViewSet)
+
 accounts_router = routers.NestedSimpleRouter(
     router, r'accounts', lookup='account'
 )
-
 accounts_router.register(r'posts', AccountPostsViewSet)
+
 # urlpatterns = patterns(
 #      '',
 #     # ... URLs
@@ -42,7 +43,9 @@ accounts_router.register(r'posts', AccountPostsViewSet)
 #     url('^.*$', IndexView.as_view(), name='index'),
 # )
 
-urlpatterns = [
+
+
+urlpatterns = patterns(
     
     
     url(r'^admin/', include(admin.site.urls)),
@@ -65,7 +68,7 @@ urlpatterns = [
     # (?P<user_id>\w+)
     #url(r"^contact/$", "ivr.views.contact", name="contact")
 
-]
+)
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -13,11 +13,11 @@ from api.models import Post
 class AccountSerializer(serializers.ModelSerializer):
     print "In AccountSerializer"
     password = serializers.CharField(write_only=True, required=False)
-    #confirm_password = serializers.CharField(write_only=True, required=False)
+    confirm_password = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'username', 'first_name', 'last_name' , 'password',
+        fields = ('id', 'email', 'username', 'first_name', 'last_name' , 'password', 'confirm_password',
                   'date_joined', 'last_login')
         read_only_fields = ('date_joined', 'last_login',)
 
@@ -32,9 +32,9 @@ class AccountSerializer(serializers.ModelSerializer):
             instance.save()
 
             password = validated_data.get('password', None)
-            #confirm_password = validated_data.get('confirm_password', None)
+            confirm_password = validated_data.get('confirm_password', None)
 
-            if password:
+            if password and confirm_password and password == confirm_password:
                 instance.set_password(password)
                 instance.save()
 

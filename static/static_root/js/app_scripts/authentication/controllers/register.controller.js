@@ -20,7 +20,7 @@
     vm.register = register;
 
     activate();
-    console.log("Hello");
+
     /**
      * @name activate
      * @desc Actions to be performed when this controller is instantiated
@@ -39,7 +39,7 @@
      * @memberOf app.authentication.controllers.RegisterController
      */
     function register() {
-      console.log(vm.email, vm.password, vm.username);
+      console.log("hello");
       Authentication.register(vm.email, vm.password, vm.username);
     }
   }
