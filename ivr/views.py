@@ -174,7 +174,7 @@ def ivr_delete(request, ivr_id, user_id):
 def ivr_endpoint(request, ivr_id, user_id):
 	print ivr_id, user_id
 	Ivrdata = IvrData.objects.get(id=ivr_id)
-	print Ivrdata
+	print Ivrdata.ip_zero , Ivrdata.ip_one
 	#Ivrdata = Ivrdata.filter(id=ivr_id)
 	context = {
 		"working": "yes"
@@ -188,12 +188,14 @@ def ivr_endpoint(request, ivr_id, user_id):
 		getdigits_action_url = request.build_absolute_uri()
 		getDigits = plivoxml.GetDigits(action=getdigits_action_url, method='POST', timeout=7, numDigits=1, retries=1)
 		getDigits.addSpeak(Ivrdata.ivr_message)
-		response.add(getDigits)
+		print response.add(getDigits)
 		response.addSpeak(Ivrdata.ivr_no_input_message)
-		return HttpResponse(str(response), content_type="text/xml")
+		return HttpResponse(response, content_type="text/xml")
 
 	elif request.method == 'POST':
-		digit = request.POST['Digits']
+		#digit = request.POST['Digits']
+		digit = request.form.get('Digits')
+		print digits
 
 		if (digit == "0" or digit == 0):
 			response.addSpeak(Ivrdata.ip_zero)
@@ -218,7 +220,7 @@ def ivr_endpoint(request, ivr_id, user_id):
 		else:
 			response.addSpeak(WRONG_INPUT_MESSAGE)
 
-		return HttpResponse(str(response), content_type="text/xml")
+		return HttpResponse(response, content_type="text/xml")
 	
 
 
