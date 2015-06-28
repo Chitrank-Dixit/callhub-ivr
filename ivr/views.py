@@ -195,25 +195,25 @@ def ivr_endpoint(request, ivr_id, user_id):
 	elif request.method == 'POST':
 		digit = request.POST['Digits']
 
-		if digit == "0":
+		if (digit == "0" or digit == 0):
 			response.addSpeak(Ivrdata.ip_zero)
-		elif digit == "1":
+		elif (digit == "1" or digit == 1):
 			response.addSpeak(Ivrdata.ip_one)
-		elif digit == "2":
+		elif (digit == "2" or digit == 2):
 			response.addSpeak(Ivrdata.ip_two)
-		elif digit == "3":
+		elif (digit == "3" or digit == 3):
 			response.addSpeak(Ivrdata.ip_three)
-		elif digit == "4":
+		elif (digit == "4" or digit == 4):
 			response.addSpeak(Ivrdata.ip_four)
-		elif digit == "5":
+		elif (digit == "5" or digit == 5):
 			response.addSpeak(Ivrdata.ip_five)
-		elif digit == "6":
+		elif (digit == "6" or digit == 6):
 			response.addSpeak(Ivrdata.ip_six)
-		elif digit == "7":
+		elif (digit == "7" or digit == 7):
 			response.addSpeak(Ivrdata.ip_seven)
-		elif digit == "8":
+		elif (digit == "8" or digit == 8):
 			response.addSpeak(Ivrdata.ip_eight)
-		elif digit == "9":
+		elif (digit == "9" or digit == 9):
 			response.addSpeak(Ivrdata.ip_nine)
 		else:
 			response.addSpeak(WRONG_INPUT_MESSAGE)
