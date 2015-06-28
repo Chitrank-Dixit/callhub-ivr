@@ -185,7 +185,7 @@ def ivr_endpoint(request, ivr_id, user_id):
 	response = plivoxml.Response()
 	if request.method == 'GET':
 		print request.get_host(), request.build_absolute_uri()
-		getdigits_action_url = reverse('ivr_endpoint', args=(ivr_id, user_id)) #'https://'+request.get_host() + '/response/ivr/' #url_for('ivr', _external=True)
+		getdigits_action_url = request.build_absolute_uri()
 		getDigits = plivoxml.GetDigits(action=getdigits_action_url, method='POST', timeout=7, numDigits=1, retries=1)
 		getDigits.addSpeak(Ivrdata.ivr_message)
 		response.add(getDigits)
