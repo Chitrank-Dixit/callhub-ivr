@@ -238,7 +238,7 @@ def ivr_sample(request):
 		response.addSpeak("Sorry No Input has been received")
 		digit = request.POST['Digits']
 		#digit = request.form.get('Digits')
-		print digits
+		
 
 		if (digit == "0" or digit == 0):
 			response.addSpeak("Hello Welcome to Sample , I am a Sales Guy")
@@ -251,7 +251,7 @@ def ivr_sample(request):
 	elif request.method == 'POST':
 		digit = request.POST['Digits']
 		#digit = request.form.get('Digits')
-		print digits
+		
 
 		if (digit == "0" or digit == 0):
 			response.addSpeak("Hello Welcome to Sample , I am a Sales Guy")
