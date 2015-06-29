@@ -28,3 +28,5 @@ class ConfigIvrForm(forms.Form):
 	ip_eight = forms.CharField()
 	ip_nine = forms.CharField()
 	
+#class GetDigitForm(forms.Form):
+
