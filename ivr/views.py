@@ -1,7 +1,7 @@
 import os
 from django.shortcuts import render, render_to_response
 from django.core.urlresolvers import reverse
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 # Django Authentication builtins
 from django.contrib import auth
 from django.contrib.auth import login , logout
@@ -173,7 +173,7 @@ def ivr_delete(request, ivr_id, user_id):
 	Ivrdata.delete()
 	return HttpResponseRedirect('/response/ivr/list/')
 
-@csrf_protect
+@csrf_exempt
 def ivr_endpoint(request, ivr_id, user_id):
 	print ivr_id, user_id
 	Ivrdata = IvrData.objects.get(id=ivr_id)
