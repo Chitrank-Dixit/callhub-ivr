@@ -1,6 +1,7 @@
 import os
 from django.shortcuts import render, render_to_response
 from django.core.urlresolvers import reverse
+from django.views.decorators.csrf import csrf_protect
 # Django Authentication builtins
 from django.contrib import auth
 from django.contrib.auth import login , logout
