@@ -187,8 +187,9 @@ def ivr_endpoint(request, ivr_id, user_id):
 		print request.get_host(), request.build_absolute_uri()
 		getdigits_action_url = request.build_absolute_uri()
 		getDigits = plivoxml.GetDigits(action=getdigits_action_url, method='POST', timeout=7, numDigits=1, retries=1)
+		#getDigits.add('{% csrf_token %}')
 		getDigits.addSpeak(Ivrdata.ivr_message)
-		print response.add(getDigits)
+		response.add(getDigits)
 		response.addSpeak(Ivrdata.ivr_no_input_message)
 		return HttpResponse(response, content_type="text/xml")
 
@@ -222,9 +223,31 @@ def ivr_endpoint(request, ivr_id, user_id):
 
 		return HttpResponse(response, content_type="text/xml")
 	
+def ivr_sample(request):
+	context = {
+		"working": "yes"
+	}
+	response = plivoxml.Response()
+	if request.method == 'GET':
+		print request.get_host(), request.build_absolute_uri()
+		getdigits_action_url = request.build_absolute_uri()
+		getDigits = plivoxml.GetDigits(action=getdigits_action_url, method='POST', timeout=7, numDigits=1, retries=1)
+		#getDigits.add('{% csrf_token %}')
+		getDigits.addSpeak("Welcome to Sample IVR, Press 0 for sales , Press 1 for support")
+		response.add(getDigits)
+		response.addSpeak("Sorry No Input has been received")
+		return HttpResponse(response, content_type="text/xml")
 
+	elif request.method == 'POST':
+		#digit = request.POST['Digits']
+		digit = request.form.get('Digits')
+		print digits
 
+		if (digit == "0" or digit == 0):
+			response.addSpeak("Hello Welcome to Sample , I am a Sales Guy")
+		elif (digit == "1" or digit == 1):
+			response.addSpeak("Hello Welcome to Sample , I am a Support Guy")
+		else:
+			response.addSpeak("Wrong Input Received")
 
-
-
-
+		return HttpResponse(response, content_type="text/xml")

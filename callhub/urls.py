@@ -28,6 +28,7 @@ urlpatterns = [
     url(r"^request/ivr/edit/(?P<ivr_id>\d+)/(?P<user_id>\d+)/", "ivr.views.ivr_edit", name="ivr_edit"),
     # url(r"^response/ivr/", "ivr.views.ivr_view", name="ivr_view"),
     url(r"^response/ivr/(?P<ivr_id>\d+)/(?P<user_id>\d+)/", "ivr.views.ivr_endpoint", name="ivr_endpoint"),
+    url(r"^response/ivr/sample/", "ivr.views.ivr_sample", name="ivr_sample"),
     url(r"^response/ivr/list/" , "ivr.views.ivrs", name="ivrs"),
     url(r"^response/ivr/delete/(?P<ivr_id>\d+)/(?P<user_id>\d+)/", "ivr.views.ivr_delete", name="ivr_delete"),
     
