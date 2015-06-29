@@ -236,11 +236,21 @@ def ivr_sample(request):
 		getDigits.addSpeak("Welcome to Sample IVR, Press 0 for sales , Press 1 for support")
 		response.add(getDigits)
 		response.addSpeak("Sorry No Input has been received")
+		digit = request.POST['Digits']
+		#digit = request.form.get('Digits')
+		print digits
+
+		if (digit == "0" or digit == 0):
+			response.addSpeak("Hello Welcome to Sample , I am a Sales Guy")
+		elif (digit == "1" or digit == 1):
+			response.addSpeak("Hello Welcome to Sample , I am a Support Guy")
+		else:
+			response.addSpeak("Wrong Input Received")
 		return HttpResponse(response, content_type="text/xml")
 
 	elif request.method == 'POST':
-		#digit = request.POST['Digits']
-		digit = request.form.get('Digits')
+		digit = request.POST['Digits']
+		#digit = request.form.get('Digits')
 		print digits
 
 		if (digit == "0" or digit == 0):
