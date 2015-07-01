@@ -173,7 +173,7 @@ def ivr_delete(request, ivr_id, user_id):
 	Ivrdata.delete()
 	return HttpResponseRedirect('/response/ivr/list/')
 
-@csrf_exempt
+@csrf_protect
 def ivr_endpoint(request, ivr_id, user_id):
 	print ivr_id, user_id
 	Ivrdata = IvrData.objects.get(id=ivr_id)
@@ -223,7 +223,6 @@ def ivr_endpoint(request, ivr_id, user_id):
 			response.addSpeak(Ivrdata.ip_nine)
 		else:
 			response.addSpeak(WRONG_INPUT_MESSAGE)
-
 		return HttpResponse(response, content_type="text/xml")
 
 @csrf_protect	
