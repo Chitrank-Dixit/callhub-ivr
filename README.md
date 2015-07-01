@@ -11,5 +11,9 @@ Tech Stack
 Branches
 -----------------------
 
-- master (a simple Django IVR configurable application)
+- master (a simple Django IVR configurable application , now working perfectly)
 - rest (building a REST API based on Web 2.0 using Django and AngularJS)
+
+
+
+
