@@ -198,8 +198,8 @@ def ivr_endpoint(request, ivr_id, user_id):
 
 	elif request.method == 'POST':
 		#digit = request.POST['Digits']
-		digit = request.form.get('Digits')
-		print digits
+		digit = request.POST.get('Digits')
+		
 
 		if (digit == "0" or digit == 0):
 			response.addSpeak(Ivrdata.ip_zero)
