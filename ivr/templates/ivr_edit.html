@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 <!-- Main component for a primary marketing message or call to action -->
 {% block head_title %}Edit IVR | {{ block.super }}{% endblock %}
 {% block jumbotron %}
@@ -17,7 +18,7 @@
 	<h1>Edit Ivr</h1>
 	<form data-toggle="validator" name="edit_ivr" id="editivr_form" action="/request/ivr/edit/{{ivr_id}}/{{user_id}}/" method="post">{% csrf_token %}
 
-        <div class="form-group">
+        <!-- <div class="form-group">
     
         <label>IVR Name</label>
         <input type="text" class="form-control col-sm-3" name="ivr_name" id="ivr_name" placeholder="Enter the Name of an IVR" data-error="This is Required" required>
@@ -106,7 +107,8 @@
           <label> 9  </label> <textarea class="form-control col-sm-3" name="nineip_message" id="nineip_message" placeholder="Enter the Message when caller press 9 from the phone"></textarea>
           
           <br><br><br><br>
-        </div>
+        </div> -->
+        {{ form | crispy }}
 
         
         <div class="form-group">
